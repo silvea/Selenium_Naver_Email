@@ -23,7 +23,7 @@ public class Main extends JFrame {
 	private JTextField rece;
 	private JTextField point;
 	private JTextField title;
-	
+	static Start start;
 	
 	
 	/**
@@ -59,7 +59,7 @@ public class Main extends JFrame {
 		contentPane.add(ID);
 		ID.setColumns(10);
 		
-		JLabel lblId = new JLabel("이메일");
+		JLabel lblId = new JLabel("아이디");
 		lblId.setBounds(12, 20, 57, 15);
 		contentPane.add(lblId);
 		
@@ -116,17 +116,35 @@ public class Main extends JFrame {
 				
 				for(int i=0 ; i<input_value.length ; i++) {
 					boolean data = val_check.emt_check(input_value[i]);
-					if(i==3) { continue; }
-					else if(!data) { Focus(i); Sel_Check = false; break; }
+					if(i==3) {  
+						if( !input_value[i].equals("") && !val_check.email_check(input_value[i])) 
+						{ 
+							JOptionPane.showConfirmDialog(null, "참조가 이메일 형식이 아닙니다.", "경고", JOptionPane.WARNING_MESSAGE); 
+							Sel_Check = false; 
+							break; 
+						} 
+						continue; 
+					}
+					else if( (i==2)) { 
+						if(!val_check.email_check(input_value[i])) {
+							JOptionPane.showConfirmDialog(null, "수신자가 이메일 형식이 아닙니다.", "경고", JOptionPane.WARNING_MESSAGE); 
+							Sel_Check = false; 
+							break; 
+						}
+					}
+					else if(!data) { 
+						Focus(i); 
+						Sel_Check = false; 
+						break; 
+					}
 				}				
 				
 				if(Sel_Check) {
-					Start start = new Start();
-					String result = start.connect() ? 
-							start.Login(input_value[0], input_value[1]) ? 
+					start = new Start();
+					String result = start.connect() ? start.Login(input_value[0], input_value[1]) ? 
 									start.Send_write(input_value[2], input_value[3], input_value[4], input_value[5]) ? 
 											"발송성공" : "발송실패" : "로그인실패" : "연결실패";
-					start.Result_Exit(result);
+					start.Result_Exit(result);	
 				}
 			}
 		});

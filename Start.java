@@ -10,8 +10,9 @@ import org.openqa.selenium.interactions.Actions;
 
 public class Start {
 	
-	static WebDriver driver = new ChromeDriver();
-	static Actions action = new Actions(driver);
+	WebDriver driver = new ChromeDriver();
+	Actions action = new Actions(driver);
+	
 	public boolean connect() {
 		try { driver.get("https://www.naver.com"); }
 		catch (Exception e) { return false; }
@@ -25,8 +26,8 @@ public class Start {
 			action.sendKeys(Keys.ENTER).perform();
 			Thread.sleep(1000);
 			
-			try { driver.findElement(By.id("user_name")); } 
-			catch (Exception e) { driver.quit(); return false; }
+			try { driver.findElement(By.className("mask")); } 
+			catch (Exception e) { return false; }
 				
 		} catch (Exception e1) {
 			return false;
@@ -51,14 +52,14 @@ public class Start {
 			action.sendKeys(content).perform();
 			
 			driver.findElement(By.id("sendBtn")).click();
-			
-		} catch (InterruptedException e) { return false; }	
 		
-		return true;
+			return true;
+		} catch (InterruptedException e) { return false; }
 	}
 	
 	public void Result_Exit(String result) {
 		JOptionPane.showConfirmDialog(null, result, 
 				result, !(result.equals("발송성공")) ? JOptionPane.WARNING_MESSAGE : JOptionPane.PLAIN_MESSAGE); 
 	}
+	
 }
